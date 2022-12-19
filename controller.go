@@ -47,6 +47,8 @@ func (r *reconcileReplicaSet) Reconcile(ctx context.Context, request reconcile.R
 	if registry[0] == "avhost" {
 		log.Info("Found docker.io")
 		pod.Spec.Containers[0].Image = "otherrepo" + pod.Spec.Containers[0].Image
+		pod.Spec.ImagePullSecrets = make([]corev1.LocalObjectReference, 1)
+		pod.Spec.ImagePullSecrets[0].Name = "regcred"
 	}
 
 	// Print the ReplicaSet
@@ -54,7 +56,7 @@ func (r *reconcileReplicaSet) Reconcile(ctx context.Context, request reconcile.R
 
 	err = r.client.Update(ctx, pod)
 	if err != nil {
-		return reconcile.Result{}, fmt.Errorf("could not update Pod data: %+v", err)
+		return reconcile.Result{}, fmt.Errorf("could not write pod: %+v", err)
 	}
 
 	return reconcile.Result{}, nil
