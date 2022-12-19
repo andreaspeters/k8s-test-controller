@@ -32,7 +32,7 @@ func main() {
 
 	// Setup a new controller to reconcile ReplicaSets
 	entryLog.Info("Setting up controller")
-	c, err := controller.New("foo-controller", mgr, controller.Options{
+	c, err := controller.New("avcontroller", mgr, controller.Options{
 		Reconciler: &reconcileReplicaSet{client: mgr.GetClient()},
 	})
 	if err != nil {

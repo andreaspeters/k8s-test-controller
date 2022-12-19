@@ -54,7 +54,7 @@ func (r *reconcileReplicaSet) Reconcile(ctx context.Context, request reconcile.R
 
 	err = r.client.Update(ctx, pod)
 	if err != nil {
-		return reconcile.Result{}, fmt.Errorf("could not write ReplicaSet: %+v", err)
+		return reconcile.Result{}, fmt.Errorf("could not update Pod data: %+v", err)
 	}
 
 	return reconcile.Result{}, nil
