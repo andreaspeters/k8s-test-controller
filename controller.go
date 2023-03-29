@@ -27,10 +27,17 @@ func (r *reconcileReplicaSet) Reconcile(ctx context.Context, request reconcile.R
 
 	// Fetch the pod from the cache
 	pod := &corev1.Pod{}
+	node := &corev1.Node{}
+
 	err := r.client.Get(ctx, request.NamespacedName, pod)
 	if errors.IsNotFound(err) {
 		log.Error(nil, "Could not find Pods")
 		return reconcile.Result{}, nil
+	}
+
+	fmt.Printf("%s\n", node.Name)
+	for _, condition := range node.Status.Conditions {
+		fmt.Printf("\t%s: %s\n", condition.Type, condition.Status)
 	}
 
 	if err != nil {
@@ -46,6 +53,7 @@ func (r *reconcileReplicaSet) Reconcile(ctx context.Context, request reconcile.R
 
 	if registry[0] == "avhost" {
 		log.Info("Found docker.io")
+
 		pod.Spec.Containers[0].Image = "otherrepo" + pod.Spec.Containers[0].Image
 		pod.Spec.ImagePullSecrets = make([]corev1.LocalObjectReference, 1)
 		pod.Spec.ImagePullSecrets[0].Name = "regcred"
