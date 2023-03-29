@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 
+	util "github.com/AVENTER-UG/util/util"
 	corev1 "k8s.io/api/core/v1"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
@@ -15,8 +16,17 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/source"
 )
 
+var (
+	EnvImageRepo     string
+	EnvNamespaces    string
+	EnvSkipImageRepo string
+)
+
 func init() {
 	log.SetLogger(zap.New())
+	EnvImageRepo = util.Getenv("IMAGE_REPO", "")
+	EnvSkipImageRepo = util.Getenv("SKIP_IMAGE_REPO", "myownone|thisone")
+	EnvNamespaces = util.Getenv("NAMESPACE", "kube-system|vmware|kubernetes")
 }
 
 func main() {

@@ -1,0 +1,3 @@
+# K8s Controller ...
+
+... to demonstrate, how to change the Image Repository URL on the fly.
